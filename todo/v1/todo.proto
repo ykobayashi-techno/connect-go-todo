@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package todo.v1;
+
+option go_package = "todo/gen/todo/v1;todov1";
+
+enum Status {
+	STATUS_UNKNOWN_UNSPECIFIED = 0;
+	STATUS_TODO = 1;
+	STATUS_DONE = 2;
+}
+
+message TodoItem {
+	uint64 id = 1;
+	string name = 2;
+	Status status = 3;
+}
+
+message TodoItems {
+	repeated TodoItem items = 1;
+}
+
+message CreateTaskRequest {
+	string name = 1;
+	Status status = 2;
+}
+
+message CreateTaskResponse {
+	uint64 id = 1;
+	string name = 2;
+	Status status = 3;
+}
+
+message UpdateTaskStatusRequest {
+	uint64 id = 1;
+	Status status = 2;
+}
+  
+message UpdateTaskStatusResponse {
+	uint64 id = 1;
+	Status status = 2;
+}
+  
+message DeleteTaskRequest {
+	uint64 id = 1;
+}
+  
+message DeleteTaskResponse {
+	uint64 id = 1;
+}
+
+message GetAllTasksRequest {}
+
+message GetAllTasksResponse {
+	repeated TodoItem items = 1;
+}
+
+  service TodoService {
+	rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {}
+	rpc UpdateTaskStatus(UpdateTaskStatusRequest) returns (UpdateTaskStatusResponse) {}
+	rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse) {}
+	rpc GetAllTasks(GetAllTasksRequest) returns (GetAllTasksResponse) {}
+  }
