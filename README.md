@@ -29,3 +29,19 @@ grpcurl -protoset <(buf build -o -) -plaintext -d '{}' localhost:8080 todo.v1.To
 ```
 
 とかやると結果が返ってくる
+
+### SvelteKitから
+
+この辺を参考にしながら
+https://connectrpc.com/docs/node/implementing-services
+
+今の構成にtodo-svelte-appを追加したので
+buf.gen.yamlを編集
+
+buf generate用にnpmのライブラリをグローバルに入れておく
+
+```
+npm install -g @bufbuild/protoc-gen-es @bufbuild/protoc-gen-connect-es
+```
+
+これでbuf generateできる
