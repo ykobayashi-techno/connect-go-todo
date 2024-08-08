@@ -55,9 +55,9 @@ message GetAllTasksResponse {
 	repeated TodoItem items = 1;
 }
 
-  service TodoService {
+service TodoService {
 	rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {}
 	rpc UpdateTaskStatus(UpdateTaskStatusRequest) returns (UpdateTaskStatusResponse) {}
 	rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse) {}
 	rpc GetAllTasks(GetAllTasksRequest) returns (GetAllTasksResponse) {}
-  }
+}
