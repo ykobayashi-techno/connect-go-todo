@@ -60,7 +60,9 @@ func (s *TodoServer) UpdateTaskStatus(
 
 	v, ok := s.todos.Load(updateId)
 	if !ok {
+		err := fmt.Errorf("todo not found: %d", updateId)
 		fmt.Printf("Todo not found: %d\n", updateId)
+		return nil, err
 	}
 
 	todo := v.(*todov1.TodoItem)
@@ -104,7 +106,9 @@ func (s *TodoServer) DeleteTask(
 
 	_, ok := s.todos.Load(delId)
 	if !ok {
+		err := fmt.Errorf("todo not found: %d", delId)
 		fmt.Printf("Todo not found: %d\n", delId)
+		return nil, err
 	}
 
 	// DELETE TODO
@@ -144,6 +148,7 @@ func (s *TodoServer) GetAllTasks(
 	})
 
 	log.Println("Request headers: ", req.Header())
+
 	res := connect.NewResponse(&todov1.GetAllTasksResponse{
 		Items: items,
 	})
