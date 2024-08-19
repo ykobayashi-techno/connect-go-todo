@@ -1,4 +1,4 @@
-## メモ
+## ここまでやったことメモ
 
 [go connect - getting started](https://connectrpc.com/docs/go/getting-started/)
 
@@ -30,7 +30,7 @@ grpcurl -protoset <(buf build -o -) -plaintext -d '{}' localhost:8080 todo.v1.To
 
 とかやると結果が返ってくる
 
-### SvelteKitから
+### SvelteKitアプリ準備
 
 この辺を参考にしながら
 https://connectrpc.com/docs/node/implementing-services
@@ -38,10 +38,43 @@ https://connectrpc.com/docs/node/implementing-services
 今の構成にtodo-svelte-appを追加したので
 buf.gen.yamlを編集
 
-buf generate用にnpmのライブラリをグローバルに入れておく
+プロジェクトのルートで
 
 ```
-npm install -g @bufbuild/protoc-gen-es @bufbuild/protoc-gen-connect-es
+npm install --save-dev @bufbuild/buf @connectrpc/protoc-gen-connect-es@"^1.0.0" @bufbuild/protoc-gen-es@"^1.0.0"
 ```
 
-これでbuf generateできる
+後に
+
+```
+npm create svelte@latest svelte-todo
+```
+
+```
+npx buf generate --path ./todo/v1/todo.proto
+```
+
+行うと、svelte-todo/src/genにファイルが出力される
+
+svelte-todo内で
+
+```
+npm install @connectrpc/connect@"^1.0.0" @connectrpc/connect-web@"^1.0.0" @bufbuild/protobuf@"^1.0.0"
+```
+
+### サーバー立ち上げ
+
+./cmd/server/
+
+```
+go run main.go
+```
+
+### アプリ立ち上げ
+
+SvelteKit側で各種処理記述
+
+./svelte-todo/
+```
+npm run dev
+```
