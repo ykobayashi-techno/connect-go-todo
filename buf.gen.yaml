@@ -8,10 +8,10 @@ plugins:
     opt: paths=source_relative
   # This will invoke protoc-gen-es and write output to src/gen
   - local: protoc-gen-es
-    out: todo-react/src/gen
+    out: svelte-todo/src/gen
     opt: target=ts
   # This will invoke protoc-gen-connect-es
   - local: protoc-gen-connect-es
-    out: todo-react/src/gen
+    out: svelte-todo/src/gen
     # Add more plugin options here
     opt: target=ts
