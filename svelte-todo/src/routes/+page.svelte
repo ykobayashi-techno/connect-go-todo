@@ -88,6 +88,14 @@
 							class="task-status-button"
 							type="button"
 							on:click={async () => {
+								if (
+									!confirm(
+										`Are you sure to delete task ${task.id} ${task.name}?`,
+									)
+								) {
+									return;
+								}
+
 								await client.deleteTask({
 									id: task.id,
 								});
