@@ -184,7 +184,7 @@ func withCORS(h http.Handler) http.Handler {
 		exposedHeaders = connectcors.ExposedHeaders()
 	)
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173"},
+		AllowedOrigins:   []string{"http://127.0.0.1:5174"},
 		AllowedMethods:   allowedMethods,
 		AllowedHeaders:   allowedHeaders,
 		ExposedHeaders:   exposedHeaders,
