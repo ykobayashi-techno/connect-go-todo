@@ -1,6 +1,12 @@
 ## ここまでやったことメモ
 
-[go connect - getting started](https://connectrpc.com/docs/go/getting-started/)
+Go言語でServerとClient書くまで
+
+[Connect for Go - Getting started](https://connectrpc.com/docs/go/getting-started)
+
+SvelteKit周り
+
+[Connect for Web - Getting started](https://connectrpc.com/docs/web/getting-started)
 
 ### apiを生やす
 
@@ -32,10 +38,24 @@ grpcurl -protoset <(buf build -o -) -plaintext -d '{}' localhost:8080 todo.v1.To
 
 ### SvelteKitアプリ準備
 
-この辺を参考にしながら
-https://connectrpc.com/docs/node/implementing-services
+#### 一覧
 
-今の構成にtodo-svelte-appを追加したので
+通信できるまでにやったことまとめ
+
+- ./cmd/server/main.goのCORS対応の追加(フロントエンド側から操作できるようにするため)
+- buf.gen.yamlにtypescriptファイル用の設定追加
+- ルートに必要なパッケージをnpm install --save-devで追加
+- SvelteKitのプロジェクト追加
+- npx buf generateで対応ファイル作成
+- SvelteKitのコンポーネント追加
+
+#### やったこと
+
+この辺を参考にしながら
+
+https://connectrpc.com/docs/web/getting-started
+
+今の構成にsvelte-todoを追加したので
 buf.gen.yamlを編集
 
 プロジェクトのルートで
