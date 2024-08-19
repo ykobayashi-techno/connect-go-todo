@@ -6,9 +6,3 @@ plugins:
   - local: protoc-gen-connect-go
     out: gen
     opt: paths=source_relative
-  - local: protoc-gen-es
-    out: todo-svelte-app/src/gen
-    opt: target=ts
-  - local: protoc-gen-connect-es
-    out: todo-svelte-app/src/gen
-    opt: target=ts
