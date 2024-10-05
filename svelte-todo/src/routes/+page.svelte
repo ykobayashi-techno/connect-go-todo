@@ -38,12 +38,12 @@
 
 <section>
 	<h1>
-		<span class="welcome">
+		<!-- <span class="welcome">
 			<picture>
 				<source srcset={welcome} type="image/webp" />
 				<img src={welcome_fallback} alt="Welcome" />
 			</picture>
-		</span>
+		</span> -->
 
 		SvelteKit Todo app
 	</h1>
@@ -52,7 +52,7 @@
 		<thead>
 			<tr>
 				<th class="taskId">id</th>
-				<th>Task</th>
+				<th class="task-name-header">Task</th>
 				<th>Status</th>
 				<th>Delete</th>
 			</tr>
@@ -61,7 +61,7 @@
 			{#each tasks as task}
 				<tr>
 					<td>{task.id}</td>
-					<td>{task.name}</td>
+					<td class="task-name">{task.name}</td>
 					<td class="task-status"
 						><button
 							class="task-status-button"
@@ -144,7 +144,6 @@
 	section {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		align-items: center;
 		flex: 0.6;
 	}
@@ -153,7 +152,7 @@
 		width: 100%;
 	}
 
-	.welcome {
+	/* .welcome {
 		display: block;
 		position: relative;
 		width: 100%;
@@ -167,7 +166,7 @@
 		height: 100%;
 		top: 0;
 		display: block;
-	}
+	} */
 
 	table {
 		width: 100%;
@@ -175,8 +174,13 @@
 		border-collapse: collapse;
 		border-spacing: 0;
 		border-top: solid 1px #778ca3;
+		border-left: solid 1px #778ca3;
+		border-right: solid 1px #778ca3;
 	}
-	table tr:nth-child(2n + 1) {
+	table thead {
+		background: #a6b7b7;
+	}
+	table tbody tr:nth-child(even) {
 		background: #e9faf9;
 	}
 	table th,
@@ -187,6 +191,11 @@
 
 	table th.taskId {
 		width: 6em;
+	}
+
+	table .task-name,
+	table .task-name-header {
+		text-align: left;
 	}
 
 	.task-status-button {
