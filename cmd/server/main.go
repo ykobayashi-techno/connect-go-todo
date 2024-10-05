@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sort"
 	"sync"
 
 	"connectrpc.com/connect"
@@ -131,10 +132,22 @@ func LogTodoList(s *TodoServer) {
 	if isEmpty(&s.todos) {
 		log.Println("todoはありません")
 	} else {
+		// sync.Mapのソートはそのままではできない。
+		// keyを取得してソートする
+		var keys []uint64
 		s.todos.Range(func(key, value interface{}) bool {
-			log.Printf("key is %d, value is %v", key, value)
+			keys = append(keys, key.(uint64))
 			return true
 		})
+
+		sort.Slice(keys, func(i, j int) bool {
+			return keys[i] < keys[j]
+		})
+
+		for _, key := range keys {
+			v, _ := s.todos.Load(key)
+			log.Printf("key is %d, value is %v", key, v)
+		}
 	}
 }
 
@@ -184,7 +197,7 @@ func withCORS(h http.Handler) http.Handler {
 		exposedHeaders = connectcors.ExposedHeaders()
 	)
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://127.0.0.1:5174"},
+		AllowedOrigins:   []string{"http://127.0.0.1:5173"},
 		AllowedMethods:   allowedMethods,
 		AllowedHeaders:   allowedHeaders,
 		ExposedHeaders:   exposedHeaders,
