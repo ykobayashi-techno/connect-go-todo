@@ -1,0 +1,9 @@
+development:
+  dialect: mysql
+  datasource: ${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_DBNAME}?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true
+  dir: db/migrations
+
+production:
+  dialect: mysql
+  datasource: ${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_DBNAME}?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true
+  dir: db/migrations
