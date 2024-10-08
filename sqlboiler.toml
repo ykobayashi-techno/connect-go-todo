@@ -1,0 +1,8 @@
+[mysql]
+  dbname   = "todos_dev"
+  host     = "172.27.128.1"
+  port     = 3306
+  user     = "root"
+  #pass     = ""
+  blacklist=["gorp_migrations"]
+  sslmode = "false"
