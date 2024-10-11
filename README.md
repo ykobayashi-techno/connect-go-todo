@@ -98,3 +98,100 @@ SvelteKit側で各種処理記述
 ```
 npm run dev
 ```
+
+## MySQLのDBに実際に書き込むようにする
+
+### 前準備としてWindowsに入ってるMySQLをWSL2側から繋ぐ
+
+Windows側にMySQL5.6が入っているためそちらにつなぐ
+
+Windows側とUbuntu側のWSL用のIPアドレスを調べておく
+
+MySQL側で、あらかじめWSL2側のIPを許可しておく
+
+```mysql
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'WSL2_IPADDRESS' IDENTIFIED BY 'password'
+```
+
+```
+sudo apt install mariadb-client
+
+mysql -h WINDOWS_IPADDRESS -u root -p
+```
+
+で接続確認
+
+### sql-migrateを入れてマイグレーションする
+
+[sql-migrate](https://github.com/rubenv/sql-migrate)
+
+```cmd
+go install github.com/rubenv/sql-migrate/...@latest
+```
+
+dbconfig.yaml
+
+https://github.com/ykobayashi-techno/connect-go-todo/blob/main/dbconfig.yml
+
+DB用の設定。
+
+DB作成自体は手動で行う必要があるみたいなのであらかじめDBを作成する
+
+```
+CREATE DATABASE todos_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+```
+
+.envファイルに設定値をあらかじめ書いておいて sql-migrate up を実行
+
+```
+export $(grep -v '^#' .env | xargs) && sql-migrate up
+```
+
+```mysql
+mysql> use todos_dev;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_todos_dev |
++---------------------+
+| gorp_migrations     |
+| todos               |
++---------------------+
+```
+
+migrationができた
+
+sql-migrate down実行のたびに1STEPずつdownされていく
+
+### sqlboilerでDB構造をモデルにしてGoで読み書きできるようにする
+
+todoアプリ、サーバー側の処理にMySQLの書き込み等を入れる
+
+[sqlboiler](https://github.com/volatiletech/sqlboiler)
+
+インストール
+
+```
+go install github.com/volatiletech/sqlboiler/v4@latest
+go install github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mysql@latest
+```
+
+sqlboiler.tomlを作成して
+
+https://github.com/ykobayashi-techno/connect-go-todo/blob/main/sqlboiler.toml
+
+DBの設定を行う
+
+`blacklist=["gorp_migrations"]`で設定を行って、sql-migrateが管理しているテーブルを対象外にする
+
+```
+sqlboiler mysql
+```
+
+でDBの構造に対応したデータが`model`フォルダ内に出来上がるのでこれでGoのサーバーでMySQLの読み書きができる
+
+### 実装
+
+https://github.com/ykobayashi-techno/connect-go-todo/commit/8cdf7bdf898623593deb38ec2a65939b4f2ea165
+
+MySQLに書き込み、読み込みするように実装を変更
